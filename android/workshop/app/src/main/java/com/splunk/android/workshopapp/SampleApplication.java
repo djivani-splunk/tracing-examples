@@ -18,10 +18,21 @@ package com.splunk.android.workshopapp;
 
 import android.app.Application;
 
+import com.splunk.rum.Config;
+import com.splunk.rum.SplunkRum;
+
 public class SampleApplication extends Application {
 
     @Override
     public void onCreate() {
+        Config config = Config.builder()
+                .applicationName("workshop app")
+                .rumAccessToken("xxxxxxxxxxxxxxxxx") // <-- replace with your access token
+                .realm("us0") // <-- replace with your realm
+                .deploymentEnvironment("workshop")
+                .debugEnabled(true)
+                .build();
+        SplunkRum.initialize(config, this);
         super.onCreate();
     }
 }
