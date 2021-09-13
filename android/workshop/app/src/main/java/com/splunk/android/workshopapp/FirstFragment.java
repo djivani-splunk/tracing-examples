@@ -30,6 +30,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.splunk.android.workshopapp.databinding.FragmentFirstBinding;
+import com.splunk.rum.SplunkRum;
 
 import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 
@@ -137,7 +138,7 @@ public class FirstFragment extends Fragment {
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();
         }
-        return builder.build();
+        return SplunkRum.getInstance().createRumOkHttpCallFactory(builder.build());
     }
 
     private static final TrustManager[] trustAllCerts = new TrustManager[]{
