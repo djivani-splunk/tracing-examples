@@ -18,6 +18,8 @@ package com.splunk.android.workshopapp;
 
 import static org.apache.http.conn.ssl.SSLSocketFactory.SSL;
 
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,8 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.context.Scope;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -79,8 +83,14 @@ public class FirstFragment extends Fragment {
         });
 
         binding.loginButton.setOnClickListener(v -> {
-            //not really a login, but it does make an http call
-            makeCall("https://ssidhu.o11ystore.com/");
+            Span loginSpan = SplunkRum.getInstance().startWorkflow("Login");
+            try (Scope s = loginSpan.makeCurrent()) {
+                //not really a login, but it does make an http call
+                makeCall("https://ssidhu.o11ystore.com/");
+                SplunkRum.getInstance().setGlobalAttribute(stringKey("user_id"), "123456");
+            } finally {
+                loginSpan.end();
+            }
         });
         binding.httpErrorButton.setOnClickListener(v -> {
             makeCall("https://asdlfkjasd.asdfkjasdf.ifi");
