@@ -1,15 +1,13 @@
 import UIKit
 import SDWebImage
-import SplunkRum
-import SplunkRumCrashReporting
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        SplunkRum.initialize(beaconUrl: "http://127.0.0.1:9411/api/v2/spans", rumAuth: "FAKE_RUM_AUTH", options: SplunkRumOptions(allowInsecureBeacon: true, debug: true))
-        SplunkRumCrashReporting.start()
+        
+        // This is a good spot to call SplunkRum.initialize().
 
         // Clear SDWebImage caches so the images get loaded on every app open
         SDImageCache.shared.clearMemory()
